@@ -149,7 +149,7 @@
   background: oklch(0.2 0.03 250);
   font-family: var(--font-sans);
 }
-.leaflet-tile {
+.leaflet-tile-pane {
   filter: invert(1) hue-rotate(185deg) brightness(0.92) contrast(0.95) saturate(0.55);
 }
 .leaflet-control-attribution,
