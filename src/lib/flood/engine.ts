@@ -93,7 +93,7 @@ export function initialState(scenario: ScenarioId = "NORMAL"): SimState {
 function pushHistory(s: SimState): SimState {
   const snap = computeSnapshot(s);
   const label = new Date(s.updatedAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
-  const worst = snap.zones[0];
+  const worst = snap.zones[0]!;
   const history = [
     ...s.history,
     {
@@ -249,7 +249,7 @@ export function computeSnapshot(s: SimState): Snapshot {
     };
   }).sort((a, b) => b.prediction.flood_probability - a.prediction.flood_probability);
 
-  const worst = zones[0];
+  const worst = zones[0]!;
 
   const facilities: FacilityStatus[] = FACILITIES.map((f) => {
     const level = s.levels[f.id] ?? f.base_level_pct;
@@ -345,10 +345,10 @@ export function computeSnapshot(s: SimState): Snapshot {
     updatedAt: s.updatedAt,
     simulated: true,
     rainfall_mmhr: r1(s.rainfall_mmhr),
-    predicted_rainfall_mmhr: forecast[1].rainfall,
+    predicted_rainfall_mmhr: forecast[1]!.rainfall,
     cumulative_rainfall_mm: r1(s.cumulative_rainfall_mm),
     water_level_m: r1(s.water_level_m),
-    predicted_water_level_m: forecast[1].water_level,
+    predicted_water_level_m: forecast[1]!.water_level,
     zones,
     overall: { severity: worst.prediction.flood_severity, probability: Math.round(worst.prediction.flood_probability * 100) },
     facilities,
@@ -371,7 +371,7 @@ export function computeSnapshot(s: SimState): Snapshot {
 /* ---------------- capacity-aware diversion ---------------- */
 
 function planDiversion(s: SimState, zones: ZoneStatus[], facilities: FacilityStatus[]): DiversionPlan {
-  const worst = zones[0];
+  const worst = zones[0]!;
   const incoming = Math.round(
     Math.max(0, s.rainfall_mmhr * 620 - worst.drainage_capacity_lpm * (1 - worst.drainage_utilisation_pct / 100) * 0.6),
   );
@@ -406,8 +406,8 @@ function planDiversion(s: SimState, zones: ZoneStatus[], facilities: FacilitySta
   const pumped = Math.min(remaining, pumpCapacity);
   if (pumped > 500) {
     allocations.push({
-      facility: pumps[0].id,
-      name: `${pumps[0].name} → controlled river discharge`,
+      facility: pumps[0]!.id,
+      name: `${pumps[0]!.name} → controlled river discharge`,
       rate_lpm: pumped,
       available_pct: 100,
       downstream_risk: "LOW",
@@ -523,7 +523,7 @@ export function planRoute(snap: Snapshot, fromId: string, toId: string): RoutePl
     while (pending.size) {
       let cur = "";
       let best = Infinity;
-      for (const n of pending) if (dist[n] < best) { best = dist[n]; cur = n; }
+      for (const n of pending) if (dist[n]! < best) { best = dist[n]!; cur = n; }
       if (!cur) break;
       pending.delete(cur);
       for (const e of ROUTE_EDGES) {
@@ -532,22 +532,22 @@ export function planRoute(snap: Snapshot, fromId: string, toId: string): RoutePl
         if (avoidFlooded && flooded.has(e.road)) continue;
         const road = snap.roads.find((r) => r.id === e.road)!;
         const cost = e.minutes + (avoidFlooded ? 0 : flooded.has(e.road) ? 0 : 0) + road.depth_cm * 0.05;
-        if (dist[cur] + cost < dist[pair]) {
-          dist[pair] = dist[cur] + cost;
+        if (dist[cur]! + cost < dist[pair]!) {
+          dist[pair] = dist[cur]! + cost;
           prev[pair] = { node: cur, road: e.road };
         }
       }
     }
-    if (!isFinite(dist[toId])) return null;
+    if (!isFinite(dist[toId]!)) return null;
     const nodes: string[] = [toId];
     const roads: string[] = [];
     let cur = toId;
     while (cur !== fromId && prev[cur]) {
-      roads.unshift(prev[cur].road);
-      cur = prev[cur].node;
+      roads.unshift(prev[cur]!.road);
+      cur = prev[cur]!.node;
       nodes.unshift(cur);
     }
-    return { nodes: nodes.map(nodeName), minutes: Math.round(dist[toId]), roads };
+    return { nodes: nodes.map(nodeName), minutes: Math.round(dist[toId]!), roads };
   };
 
   const normal = search(false);
