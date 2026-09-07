@@ -150,7 +150,7 @@
   font-family: var(--font-sans);
 }
 .leaflet-tile {
-  filter: brightness(0.62) saturate(0.7) contrast(1.05) hue-rotate(175deg) invert(1);
+  filter: invert(1) hue-rotate(185deg) brightness(0.92) contrast(0.95) saturate(0.55);
 }
 .leaflet-control-attribution,
 .leaflet-popup-content-wrapper,

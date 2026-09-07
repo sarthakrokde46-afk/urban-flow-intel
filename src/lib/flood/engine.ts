@@ -139,7 +139,22 @@ export function tick(s: SimState): SimState {
 }
 
 export function setScenario(s: SimState, scenario: ScenarioId): SimState {
-  return pushHistory({ ...s, scenario, updatedAt: Date.now() });
+  // Jump most of the way to the new scenario so demos react immediately,
+  // then let the live loop settle the remainder.
+  const t = T[scenario];
+  const levels: Record<string, number> = {};
+  for (const f of FACILITIES) {
+    const target = t.fill[f.id] ?? f.base_level_pct;
+    levels[f.id] = approach(s.levels[f.id] ?? f.base_level_pct, target, 0.75);
+  }
+  return pushHistory({
+    ...s,
+    scenario,
+    levels,
+    rainfall_mmhr: approach(s.rainfall_mmhr, t.rain, 0.75),
+    water_level_m: approach(s.water_level_m, t.gauge, 0.7),
+    updatedAt: Date.now(),
+  });
 }
 
 /* ---------------- capacity ---------------- */
