@@ -3,7 +3,7 @@ import { MODEL_INFO } from "@/lib/flood/model";
 import { Meter, Panel, RiskBadge, Stat, riskColor } from "./primitives";
 
 export function NowcastPanel({ snap }: { snap: Snapshot }) {
-  const lead = snap.zones[0];
+  const lead = snap.zones[0]!;
   return (
     <Panel
       title="Flood Nowcasting (0–3 h)"

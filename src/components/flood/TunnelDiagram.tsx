@@ -12,7 +12,7 @@ export function TunnelDiagram({
 }) {
   const tanks = snap.facilities.filter((f) => f.kind !== "pump");
   const pump = snap.facilities.find((f) => f.kind === "pump")!;
-  const sel = snap.facilities.find((f) => f.id === selected) ?? tanks[0];
+  const sel = snap.facilities.find((f) => f.id === selected) ?? tanks[0]!;
   const flowing = !snap.diversion.emergency;
 
   return (
@@ -27,7 +27,7 @@ export function TunnelDiagram({
 
         <rect x="20" y="18" width="180" height="46" rx="8" fill="color-mix(in oklch, var(--risk-critical) 18%, transparent)" stroke="var(--risk-critical)" />
         <text x="110" y="40" textAnchor="middle" fill="var(--foreground)" fontSize="13" fontWeight="600">Urban Flood Zone</text>
-        <text x="110" y="55" textAnchor="middle" fill="var(--muted-foreground)" fontSize="10">{snap.zones[0].name.split("—")[0].trim()} · {snap.zones[0].prediction.predicted_water_depth_cm} cm</text>
+        <text x="110" y="55" textAnchor="middle" fill="var(--muted-foreground)" fontSize="10">{snap.zones[0]!.name.split("—")[0].trim()} · {snap.zones[0]!.prediction.predicted_water_depth_cm} cm</text>
 
         <path d="M110 64 L110 108" stroke="url(#grd)" strokeWidth="8" className={flowing ? "flow-line" : ""} />
 
