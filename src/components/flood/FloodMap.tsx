@@ -107,7 +107,7 @@ export default function FloodMap({ snap, onSelectFacility }: { snap: Snapshot; o
 
     // Active diversion flow arrows: worst zone -> allocated destination
     if (!s.diversion.emergency) {
-      const origin = s.zones[0].polygon[0];
+      const origin = s.zones[0]!.polygon[0]!;
       for (const alloc of s.diversion.allocations) {
         const dest = s.facilities.find((f) => f.id === alloc.facility);
         if (!dest) continue;

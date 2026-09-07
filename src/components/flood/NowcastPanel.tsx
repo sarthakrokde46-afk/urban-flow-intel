@@ -13,7 +13,7 @@ export function NowcastPanel({ snap }: { snap: Snapshot }) {
       <div className="grid grid-cols-2 gap-2 lg:grid-cols-4">
         <Stat label="Rainfall intensity" value={snap.rainfall_mmhr} unit="mm/hr" sub={`+30 min: ${snap.predicted_rainfall_mmhr} mm/hr`} />
         <Stat label="Water level" value={snap.water_level_m} unit="m" sub={`+30 min: ${snap.predicted_water_level_m} m`} />
-        <Stat label="Flood probability" value={`${Math.round(lead.prediction.flood_probability * 100)}`} unit="%" tone={lead.prediction.flood_severity} sub={lead.name.split("—")[0].trim()} />
+        <Stat label="Flood probability" value={`${Math.round(lead.prediction.flood_probability * 100)}`} unit="%" tone={lead.prediction.flood_severity} sub={lead.name.split("—")[0]!.trim()} />
         <Stat label="Expected depth" value={lead.prediction.predicted_water_depth_cm} unit="cm" tone={lead.prediction.flood_severity} sub={lead.prediction.time_to_flood_min ? `Time to flood ~${lead.prediction.time_to_flood_min} min` : "No flooding expected"} />
       </div>
 

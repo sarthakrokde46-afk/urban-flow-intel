@@ -479,7 +479,7 @@ function buildAlerts(zones: ZoneStatus[], facilities: FacilityStatus[], plan: Di
       out.push({
         id: `zone-${z.id}`,
         level: p.flood_severity === "CRITICAL" ? "CRITICAL" : "WARNING",
-        title: `Flooding predicted in ${z.name.split("—")[0].trim()}`,
+        title: `Flooding predicted in ${z.name.split("—")[0]!.trim()}`,
         body: `Probability ${Math.round(p.flood_probability * 100)}% · depth ~${p.predicted_water_depth_cm} cm${p.time_to_flood_min ? ` · in ~${p.time_to_flood_min} min` : ""}.`,
       });
     }
