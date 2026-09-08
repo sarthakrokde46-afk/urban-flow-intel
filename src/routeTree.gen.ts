@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiPublicFloodSplatRouteImport } from './routes/api/public/flood/$'
+import { Route as ApiPublicFloodSensor_dataRouteImport } from './routes/api/public/flood/sensor_data'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,31 +23,41 @@ const ApiPublicFloodSplatRoute = ApiPublicFloodSplatRouteImport.update({
   path: '/api/public/flood/$',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicFloodSensor_dataRoute =
+  ApiPublicFloodSensor_dataRouteImport.update({
+    id: '/api/public/flood/sensor_data',
+    path: '/api/public/flood/sensor_data',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/api/public/flood/$': typeof ApiPublicFloodSplatRoute
+  '/api/public/flood/sensor_data': typeof ApiPublicFloodSensor_dataRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/api/public/flood/$': typeof ApiPublicFloodSplatRoute
+  '/api/public/flood/sensor_data': typeof ApiPublicFloodSensor_dataRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/api/public/flood/$': typeof ApiPublicFloodSplatRoute
+  '/api/public/flood/sensor_data': typeof ApiPublicFloodSensor_dataRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/api/public/flood/$'
+  fullPaths: '/' | '/api/public/flood/$' | '/api/public/flood/sensor_data'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/public/flood/$'
-  id: '__root__' | '/' | '/api/public/flood/$'
+  to: '/' | '/api/public/flood/$' | '/api/public/flood/sensor_data'
+  id: '__root__' | '/' | '/api/public/flood/$' | '/api/public/flood/sensor_data'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ApiPublicFloodSplatRoute: typeof ApiPublicFloodSplatRoute
+  ApiPublicFloodSensor_dataRoute: typeof ApiPublicFloodSensor_dataRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -65,12 +76,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicFloodSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/flood/sensor_data': {
+      id: '/api/public/flood/sensor_data'
+      path: '/api/public/flood/sensor_data'
+      fullPath: '/api/public/flood/sensor_data'
+      preLoaderRoute: typeof ApiPublicFloodSensor_dataRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ApiPublicFloodSplatRoute: ApiPublicFloodSplatRoute,
+  ApiPublicFloodSensor_dataRoute: ApiPublicFloodSensor_dataRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
