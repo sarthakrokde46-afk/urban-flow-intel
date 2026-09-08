@@ -508,17 +508,6 @@ Do not create only screenshots or a static prototype.
 
 Build the actual working application.
 
-This project was built with [Lovable](https://lovable.dev).
-
-**Live app**: https://urban-flow-intel.lovable.app
-
-## Build with Lovable
-
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/843047bf-bac4-45fa-ad6e-2758112d18d4).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
 
 ## Development
 
